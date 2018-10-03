@@ -1,0 +1,20 @@
+jobs:
+- job: JS_PreBuild_Checks
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  steps:
+  - script: echo hello from initial job JS_PreBuild_Checks
+- job: Android_Debug
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  dependsOn: JS_PreBuild_Checks
+  condition: succeeded()
+  steps:
+  - script: echo hello from Android Debug job
+- job: iOS_Debug
+  pool:
+    vmImage: 'macOS 10.13'
+  dependsOn: JS_PreBuild_Checks
+  condition: succeeded()
+  steps:
+  - script: echo hello from iOS Debug job
