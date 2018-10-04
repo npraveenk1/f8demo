@@ -7,10 +7,9 @@ jobs:
   inputs:
     versionSpec: '8.x'
   
-  - script: |
-      npm install
-      npm test
-      
+  - script: npm install && npm test
+    
+
 - job: Android_Debug
   pool:
     vmImage: 'Ubuntu 16.04'
