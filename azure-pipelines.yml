@@ -3,7 +3,14 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   steps:
-  - script: echo hello from initial job JS_PreBuild_Checks
+  - task: NodeTool@0
+  inputs:
+    versionSpec: '8.x'
+  
+  - script: |
+      npm install
+      npm test
+      
 - job: Android_Debug
   pool:
     vmImage: 'Ubuntu 16.04'
