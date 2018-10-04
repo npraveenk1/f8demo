@@ -18,7 +18,9 @@ jobs:
   dependsOn: JS_PreBuild_Checks
   condition: succeeded()
   steps:
-  - script: echo hello from Android Debug job
+  - script: |
+      npm install
+      cd android && ./gradlew assembleDebug
 - job: iOS_Debug
   pool:
     vmImage: 'macOS 10.13'
