@@ -19,24 +19,24 @@ jobs:
   condition: succeeded()
   steps:
   - task: Gradle@2
-  inputs:
-    workingDirectory: '$(system.defaultWorkingDirectory)/android'
-    gradleWrapperFile: 'gradlew'
-    gradleOptions: '-Xmx3072m'
-    publishJUnitResults: false
-    testResultsFiles: '**/TEST-*.xml'
-    tasks: 'assembleDebug'
+    inputs:
+      workingDirectory: '$(system.defaultWorkingDirectory)/android'
+      gradleWrapperFile: 'gradlew'
+      gradleOptions: '-Xmx3072m'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'assembleDebug'
 
-- task: CopyFiles@2
-  inputs:
-    contents: '**/*.apk'
-    targetFolder: '$(build.artifactStagingDirectory)'
+  - task: CopyFiles@2
+    inputs:
+      contents: '**/*.apk'
+      targetFolder: '$(build.artifactStagingDirectory)'
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    pathToPublish: '$(build.artifactStagingDirectory)'
-    artifactName: 'drop'
-    artifactType: 'container'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(build.artifactStagingDirectory)'
+      artifactName: 'drop'
+      artifactType: 'container'
 
 - job: iOS_Debug
   pool:
