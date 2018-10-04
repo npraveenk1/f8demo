@@ -4,8 +4,8 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   steps:
   - task: NodeTool@0
-  inputs:
-    versionSpec: '8.x'
+    inputs:
+      versionSpec: '8.x'
   
   - script: echo npm install step here...
     
