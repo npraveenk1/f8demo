@@ -7,7 +7,7 @@ jobs:
   inputs:
     versionSpec: '8.x'
   
-  - script: |
+  - script: 
       npm install
       npm test
 - job: Android_Debug
