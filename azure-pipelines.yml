@@ -18,6 +18,9 @@ jobs:
   dependsOn: JS_PreBuild_Checks
   condition: succeeded()
   steps:
+  - script: |
+      npm install
+      
   - task: Gradle@2
     inputs:
       workingDirectory: '$(system.defaultWorkingDirectory)/android'
