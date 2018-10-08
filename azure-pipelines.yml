@@ -6,7 +6,16 @@ jobs:
   - task: NodeTool@0
     inputs:
       versionSpec: '8.x'
-  
+  - task: Bash@3
+    inputs:
+      script: echo FLOW check script
+  - task: Bash@3
+    inputs:
+      script: echo ESLINT check script
+  - task: Bash@3
+    inputs:
+      script: echo CIRCLE dependency check script
+
   - script: |
       npm install
       npm test
