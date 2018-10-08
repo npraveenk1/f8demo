@@ -13,7 +13,7 @@ jobs:
     
 - job: Debug_Build
   pool:
-  vmImage: 'macOS 10.13'
+    vmImage: 'macOS 10.13'
   strategy:
     maxParallel: 2
     matrix: 
