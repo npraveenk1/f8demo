@@ -14,13 +14,13 @@ jobs:
 
 - job: Android_Debug
   pool:
-    vmImage: 'Ubuntu 16.04'
+    vmImage: 'macOS 10.13'
   dependsOn: JS_PreBuild_Checks
   condition: succeeded()
   steps:
   - script: |
       npm install
-
+      
   - task: Gradle@2
     inputs:
       workingDirectory: '$(system.defaultWorkingDirectory)/android'
@@ -47,6 +47,4 @@ jobs:
   dependsOn: JS_PreBuild_Checks
   condition: succeeded()
   steps:
-  - script: |
-      npm install
-      
+  - script: echo hello from iOS Debug job
