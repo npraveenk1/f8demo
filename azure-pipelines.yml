@@ -11,40 +11,57 @@ jobs:
       npm install
       npm test
     
-
-- job: Android_Debug
-  pool:
-    vmImage: 'macOS 10.13'
-  dependsOn: JS_PreBuild_Checks
-  condition: succeeded()
-  steps:
-  - script: |
-      npm install
+- job: Debug_Build
+  strategy:
+    maxParallel: 2
+    matrix: 
+      Android:
+        pool:
+        vmImage: 'macOS 10.13'
+        TEST_ESLINT_CHECKS: 1
+      iOS:
+        pool:
+        vmImage: 'macOS 10.13'
+        TEST_ESLINT_CHECKS: 0
+  steps: 
+  - script: echo this is matrix $TEST_ESLINT_CHECKS
+        
       
-  - task: Gradle@2
-    inputs:
-      workingDirectory: '$(system.defaultWorkingDirectory)/android'
-      gradleWrapperFile: '$(system.defaultWorkingDirectory)/android/gradlew'
-      gradleOptions: '-Xmx3072m'
-      publishJUnitResults: false
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'assembleDebug'
 
-  - task: CopyFiles@2
-    inputs:
-      contents: '**/*.apk'
-      targetFolder: '$(build.artifactStagingDirectory)'
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(build.artifactStagingDirectory)'
-      artifactName: 'drop'
-      artifactType: 'container'
+# - job: Android_Debug
+#   pool:
+#     vmImage: 'macOS 10.13'
+#   dependsOn: JS_PreBuild_Checks
+#   condition: succeeded()
+#   steps:
+#   - script: |
+#       npm install
+      
+#   - task: Gradle@2
+#     inputs:
+#       workingDirectory: '$(system.defaultWorkingDirectory)/android'
+#       gradleWrapperFile: '$(system.defaultWorkingDirectory)/android/gradlew'
+#       gradleOptions: '-Xmx3072m'
+#       publishJUnitResults: false
+#       testResultsFiles: '**/TEST-*.xml'
+#       tasks: 'assembleDebug'
 
-- job: iOS_Debug
-  pool:
-    vmImage: 'macOS 10.13'
-  dependsOn: JS_PreBuild_Checks
-  condition: succeeded()
-  steps:
-  - script: echo hello from iOS Debug job
+#   - task: CopyFiles@2
+#     inputs:
+#       contents: '**/*.apk'
+#       targetFolder: '$(build.artifactStagingDirectory)'
+
+#   - task: PublishBuildArtifacts@1
+#     inputs:
+#       pathToPublish: '$(build.artifactStagingDirectory)'
+#       artifactName: 'drop'
+#       artifactType: 'container'
+
+# - job: iOS_Debug
+#   pool:
+#     vmImage: 'macOS 10.13'
+#   dependsOn: JS_PreBuild_Checks
+#   condition: succeeded()
+#   steps:
+#   - script: echo hello from iOS Debug job
