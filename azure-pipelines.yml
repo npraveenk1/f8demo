@@ -14,6 +14,8 @@ jobs:
 - job: Debug_Build
   pool:
     vmImage: 'macOS 10.13'
+  dependsOn: JS_PreBuild_Checks
+  condition: succeeded()
   strategy:
     maxParallel: 2
     matrix: 
