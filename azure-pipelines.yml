@@ -12,19 +12,17 @@ jobs:
       npm test
     
 - job: Debug_Build
+  pool:
+  vmImage: 'macOS 10.13'
   strategy:
     maxParallel: 2
     matrix: 
       Android:
-        pool:
-        vmImage: 'macOS 10.13'
         TEST_ESLINT_CHECKS: 1
       iOS:
-        pool:
-        vmImage: 'macOS 10.13'
         TEST_ESLINT_CHECKS: 0
   steps: 
-  - script: echo this is matrix $TEST_ESLINT_CHECKS
+  - script: echo this is matrix ${TEST_ESLINT_CHECKS}
         
       
 
