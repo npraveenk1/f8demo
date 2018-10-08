@@ -7,17 +7,25 @@ jobs:
     inputs:
       versionSpec: '8.x'
   - task: Bash@3
+    displayName: 'Flow checks'
     inputs:
       targetType: inline
       script: echo FLOW check script
   - task: Bash@3
+    displayName: 'ESLint checks'
     inputs:
       targetType: inline
       script: echo ESLINT check script
   - task: Bash@3
+    displayName: 'Circular dependency checks'
     inputs:
       targetType: inline
       script: echo CIRCLE dependency check script
+  - task: Bash@3
+    displayName: 'JSON Lint checks'
+    inputs:
+      targetType: inline
+      script: echo JSON Lint check script
 
   - script: |
       npm install
