@@ -69,7 +69,7 @@ jobs:
 
 - job: Android_Debug
   pool:
-    vmImage: 'macOS 10.13'
+    vmImage: 'Ubuntu 16.04'
   dependsOn: JS_PreBuild_Checks
   condition: succeeded()
   steps:
