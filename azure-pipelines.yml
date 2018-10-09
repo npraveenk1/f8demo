@@ -53,15 +53,11 @@ jobs:
     maxParallel: 2
     matrix: 
       Android:
-      queue:
-        name: Android-Java
         demands:
         - agent.os -equals linux
         TEST_ESLINT_CHECKS: 1
         
       iOS:
-      queue:
-        name: iOS-Xcode
         demands:
         - agent.os -equals Darwin
         TEST_ESLINT_CHECKS: 0
