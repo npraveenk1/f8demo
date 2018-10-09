@@ -109,7 +109,7 @@ jobs:
   pool:
     vmImage: 'macOS 10.13'
   dependsOn: JS_PreBuild_Checks
-  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI'))
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
   steps:
   - task: NodeTool@0
     displayName: 'Custom Task: Install Node v8.x'
@@ -125,13 +125,19 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'assembleDebug'  
+      tasks: 'assembleRelease'  
+  - task: Bash@3
+    displayName: 'Custom Task: Upload Android app to Fabric'
+    inputs:
+      targetType: inline
+      script: echo Upload Android app to Fabric
+
 
 - job: iOS_Release
   pool:
     vmImage: 'macOS 10.13'
   dependsOn: JS_PreBuild_Checks
-  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI'))
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
   steps:
   - task: NodeTool@0
     displayName: 'Custom Task: Install Node v8.x'
@@ -139,12 +145,10 @@ jobs:
       versionSpec: '8.x'
   - script: |
       npm install
-      
-  - task: Gradle@2
+      echo script for iOS Release job 
+  - task: Bash@3
+    displayName: 'Custom Task: Upload iOS app to Fabric'
     inputs:
-      workingDirectory: '$(system.defaultWorkingDirectory)/android'
-      gradleWrapperFile: '$(system.defaultWorkingDirectory)/android/gradlew'
-      gradleOptions: '-Xmx3072m'
-      publishJUnitResults: false
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'assembleDebug'
+      targetType: inline
+      script: echo Upload iOS app to Fabric
+  
