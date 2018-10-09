@@ -125,7 +125,7 @@ jobs:
       gradleOptions: '-Xmx3072m'
       publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
-      tasks: 'assembleRelease'  
+      tasks: 'assembleDebug'  
   - task: Bash@3
     displayName: 'Custom Task: Upload Android app to Fabric'
     inputs:
