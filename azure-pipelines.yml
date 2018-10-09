@@ -106,4 +106,4 @@ jobs:
   dependsOn: JS_PreBuild_Checks
   condition: succeeded()
   steps:
-  - script: echo hello from iOS Debug job
+  - script: echo hello from iOS Debug job $(Build.Reason)
