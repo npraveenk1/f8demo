@@ -15,25 +15,26 @@ jobs:
     vmImage: 'Ubuntu 16.04'
   steps:
   - task: NodeTool@0
+    displayName: 'Custom Task: Install Node tool'
     inputs:
       versionSpec: '8.x'
   - task: Bash@3
-    displayName: 'Flow checks'
+    displayName: 'Custom Task: Flow checks'
     inputs:
       targetType: inline
       script: echo FLOW check script
   - task: Bash@3
-    displayName: 'ESLint checks'
+    displayName: 'Custom Task: ESLint checks'
     inputs:
       targetType: inline
       script: echo ESLINT check script
   - task: Bash@3
-    displayName: 'Circular dependency checks'
+    displayName: 'Custom Task: Circular dependency checks'
     inputs:
       targetType: inline
       script: echo CIRCLE dependency check script
   - task: Bash@3
-    displayName: 'JSON Lint checks'
+    displayName: 'Custom Task: JSON Lint checks'
     inputs:
       targetType: inline
       script: echo JSON Lint check script
@@ -74,7 +75,7 @@ jobs:
   condition: and(succeeded(), in(variables['Build.Reason'], 'PullRequest'))
   steps:
   - task: NodeTool@0
-    displayName: 'Install Node v8.x'
+    displayName: 'Custom Task: Install Node v8.x'
     inputs:
       versionSpec: '8.x'
   - script: |
@@ -94,16 +95,56 @@ jobs:
       contents: '**/*.apk'
       targetFolder: '$(build.artifactStagingDirectory)'
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(build.artifactStagingDirectory)'
-      artifactName: 'drop'
-      artifactType: 'container'
 
 - job: iOS_Debug
   pool:
     vmImage: 'macOS 10.13'
   dependsOn: JS_PreBuild_Checks
-  condition: succeeded()
+  condition: and(succeeded(), in(variables['Build.Reason'], 'PullRequest'))
   steps:
   - script: echo hello from iOS Debug job $(Build.Reason)
+
+
+- job: Android_Release
+  pool:
+    vmImage: 'macOS 10.13'
+  dependsOn: JS_PreBuild_Checks
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI'))
+  steps:
+  - task: NodeTool@0
+    displayName: 'Custom Task: Install Node v8.x'
+    inputs:
+      versionSpec: '8.x'
+  - script: |
+      npm install
+      
+  - task: Gradle@2
+    inputs:
+      workingDirectory: '$(system.defaultWorkingDirectory)/android'
+      gradleWrapperFile: '$(system.defaultWorkingDirectory)/android/gradlew'
+      gradleOptions: '-Xmx3072m'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'assembleDebug'  
+
+- job: iOS_Release
+  pool:
+    vmImage: 'macOS 10.13'
+  dependsOn: JS_PreBuild_Checks
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI'))
+  steps:
+  - task: NodeTool@0
+    displayName: 'Custom Task: Install Node v8.x'
+    inputs:
+      versionSpec: '8.x'
+  - script: |
+      npm install
+      
+  - task: Gradle@2
+    inputs:
+      workingDirectory: '$(system.defaultWorkingDirectory)/android'
+      gradleWrapperFile: '$(system.defaultWorkingDirectory)/android/gradlew'
+      gradleOptions: '-Xmx3072m'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'assembleDebug'
