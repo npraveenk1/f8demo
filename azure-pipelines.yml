@@ -42,7 +42,7 @@ jobs:
 
   - script: |
       npm install
-      npm test
+      npm testWithCoverage
 
   - task: PublishCodeCoverageResults@1
     displayName: 'Publish code coverage from $(System.DefaultWorkingDirectory)/coverage/clover.xml'
