@@ -21,10 +21,10 @@ jobs:
     inputs:
       versionSpec: '8.x'
 
-  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
-    displayName: 'Use Yarn 1.x'
-    inputs:
-      checkLatest: true
+  # - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
+  #   displayName: 'Use Yarn 1.x'
+  #   inputs:
+  #     checkLatest: true
 
   # - script: |
   #     npm install
