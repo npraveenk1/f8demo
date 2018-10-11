@@ -18,6 +18,9 @@ jobs:
     displayName: 'Custom Task: Install Node tool'
     inputs:
       versionSpec: '8.x'
+  - script: |
+      npm install
+      npm testWithCoverage
   - task: Bash@3
     displayName: 'Custom Task: Flow checks'
     inputs:
@@ -39,9 +42,12 @@ jobs:
       targetType: inline
       script: echo JSON Lint check script
 
-  - script: |
-      npm install
-      npm test
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish code coverage from $(System.DefaultWorkingDirectory)/coverage/clover.xml'
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/clover.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/coverage/lcov-report'    
     
 # - job: Debug_Build
 #   pool:
