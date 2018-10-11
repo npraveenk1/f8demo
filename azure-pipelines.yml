@@ -20,11 +20,16 @@ jobs:
     displayName: 'Install Node tool 8.x'
     inputs:
       versionSpec: '8.x'
-  
-  - script: |
-      npm install
-      npm test
-      npm testWithCoverage
+
+  - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
+    displayName: 'Use Yarn 1.x'
+    inputs:
+      checkLatest: true
+
+  # - script: |
+  #     npm install
+  #     npm test
+
  
   - task: Bash@3
     displayName: 'Custom Task: Flow checks'
