@@ -14,46 +14,35 @@ jobs:
   pool:
     vmImage: 'Ubuntu 16.04'
   
-  
   steps:
   - task: NodeTool@0
-    displayName: 'Install Node tool 8.x'
+    displayName: 'Custom Task: Install Node tool'
     inputs:
       versionSpec: '8.x'
-
-  # - task: geeklearningio.gl-vsts-tasks-yarn.yarn-installer-task.YarnInstaller@2
-  #   displayName: 'Use Yarn 1.x'
-  #   inputs:
-  #     checkLatest: true
-
-  # - script: |
-  #     npm install
-  #     npm test
-
- 
   - task: Bash@3
     displayName: 'Custom Task: Flow checks'
     inputs:
       targetType: inline
-      script: npm install && npm testWithCoverage
-  
+      script: echo FLOW check script
   - task: Bash@3
     displayName: 'Custom Task: ESLint checks'
     inputs:
       targetType: inline
       script: echo ESLINT check script
-
   - task: Bash@3
     displayName: 'Custom Task: Circular dependency checks'
     inputs:
       targetType: inline
       script: echo CIRCLE dependency check script
-
   - task: Bash@3
     displayName: 'Custom Task: JSON Lint checks'
     inputs:
       targetType: inline
       script: echo JSON Lint check script
+
+  - script: |
+      npm install
+      npm test
 
   - task: PublishCodeCoverageResults@1
     displayName: 'Publish code coverage from $(System.DefaultWorkingDirectory)/coverage/clover.xml'
@@ -123,7 +112,7 @@ jobs:
   - script: echo hello from iOS Debug job $(Build.Reason)
 
 
-- job: Android_Release
+- job: Android_Enterprise
   pool:
     vmImage: 'macOS 10.13'
   dependsOn: JS_PreBuild_Checks
@@ -151,7 +140,7 @@ jobs:
       script: echo Upload Android app to Fabric
 
 
-- job: iOS_Release
+- job: iOS_Enterprise
   pool:
     vmImage: 'macOS 10.13'
   dependsOn: JS_PreBuild_Checks
