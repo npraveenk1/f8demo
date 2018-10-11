@@ -43,7 +43,7 @@ jobs:
   - script: |
       npm install -g yarn
       yarn install
-      npm testWithCoverage
+      yarn testWithCoverage
 
   - task: PublishCodeCoverageResults@1
     displayName: 'Publish code coverage from $(System.DefaultWorkingDirectory)/coverage/clover.xml'
