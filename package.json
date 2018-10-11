@@ -6,6 +6,7 @@
     "server": "docker-compose up",
     "android": "./scripts/run-android-app.sh",
     "ios": "babel-node ./scripts/open-ios-project.js",
+    "testWithCoverage": "node_modules/jest/bin/jest.js --coverage",
     "test": "jest --verbose",
     "lint": "eslint .",
     "prettier": "prettier --write '**/*.js'",
