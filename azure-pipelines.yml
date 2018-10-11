@@ -13,29 +13,37 @@ jobs:
 - job: JS_PreBuild_Checks
   pool:
     vmImage: 'Ubuntu 16.04'
+  
+  
   steps:
   - task: NodeTool@0
-    displayName: 'Custom Task: Install Node tool'
+    displayName: 'Install Node tool 8.x'
     inputs:
       versionSpec: '8.x'
+  
   - script: |
       npm install
+      npm test
       npm testWithCoverage
+ 
   - task: Bash@3
     displayName: 'Custom Task: Flow checks'
     inputs:
       targetType: inline
       script: echo FLOW check script
+  
   - task: Bash@3
     displayName: 'Custom Task: ESLint checks'
     inputs:
       targetType: inline
       script: echo ESLINT check script
+
   - task: Bash@3
     displayName: 'Custom Task: Circular dependency checks'
     inputs:
       targetType: inline
       script: echo CIRCLE dependency check script
+
   - task: Bash@3
     displayName: 'Custom Task: JSON Lint checks'
     inputs:
@@ -72,7 +80,6 @@ jobs:
 #   - script: echo this is matrix ${TEST_ESLINT_CHECKS}
         
       
-
 
 - job: Android_Debug
   pool:
