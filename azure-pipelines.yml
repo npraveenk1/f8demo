@@ -89,9 +89,8 @@ jobs:
       versionSpec: '8.x'
   - script: |
       npm install -g yarn
-      npm install -g codecov
       yarn install
-      yarn test && codecov --token=$(CODECOV_TOKEN)
+      
 
       
   - task: Gradle@2
