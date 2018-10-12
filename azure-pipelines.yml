@@ -51,7 +51,7 @@ jobs:
     inputs:
       codeCoverageTool: Cobertura
       summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
-      # reportDirectory: '$(System.DefaultWorkingDirectory)/**/lcov-report'    
+      reportDirectory: '$(System.DefaultWorkingDirectory)/**/lcov-report'    
     
 # - job: Debug_Build
 #   pool:
