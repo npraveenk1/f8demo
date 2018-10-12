@@ -8,7 +8,6 @@
     "ios": "babel-node ./scripts/open-ios-project.js",
     "testWithCoverage": "node_modules/jest/bin/jest.js --coverage",
     "test": "jest --verbose",
-    "testWithCoverage": "node_modules/jest/bin/jest.js --coverage",
     "lint": "eslint .",
     "prettier": "prettier --write '**/*.js'",
     "prepush": "./scripts/pre-push-checks.sh",
@@ -67,6 +66,8 @@
     ],
     "transform": {
       "^.+\\.js$": "node_modules/babel-jest"
-    }
+    },
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   }
 }

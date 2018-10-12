@@ -42,6 +42,7 @@ jobs:
 
   - script: |
       npm install -g yarn
+      npm install -g codecov
       yarn install
       yarn testWithCoverage
 
@@ -87,7 +88,10 @@ jobs:
     inputs:
       versionSpec: '8.x'
   - script: |
-      npm install
+      npm install -g yarn
+      yarn install
+      yarn test && codecov --token=$(CODECOV_TOKEN)
+
       
   - task: Gradle@2
     inputs:
@@ -124,7 +128,8 @@ jobs:
     inputs:
       versionSpec: '8.x'
   - script: |
-      npm install
+      npm install -g yarn
+      yarn install
       
   - task: Gradle@2
     inputs:
