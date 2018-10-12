@@ -13,6 +13,7 @@ jobs:
 - job: JS_PreBuild_Checks
   pool:
     vmImage: 'Ubuntu 16.04'
+  
   steps:
   - task: NodeTool@0
     displayName: 'Custom Task: Install Node tool'
@@ -40,8 +41,17 @@ jobs:
       script: echo JSON Lint check script
 
   - script: |
-      npm install
-      npm test
+      npm install -g yarn
+      npm install -g codecov
+      yarn install
+      yarn testWithCoverage
+
+  - task: PublishCodeCoverageResults@1
+    displayName: 'Publish code coverage from $(System.DefaultWorkingDirectory)/coverage/clover.xml'
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: '$(System.DefaultWorkingDirectory)/coverage/clover.xml'
+      reportDirectory: '$(System.DefaultWorkingDirectory)/coverage/lcov-report'    
     
 # - job: Debug_Build
 #   pool:
@@ -67,7 +77,6 @@ jobs:
         
       
 
-
 - job: Android_Debug
   pool:
     vmImage: 'macOS 10.13'
@@ -79,7 +88,10 @@ jobs:
     inputs:
       versionSpec: '8.x'
   - script: |
-      npm install
+      npm install -g yarn
+      yarn install
+      
+
       
   - task: Gradle@2
     inputs:
@@ -105,7 +117,7 @@ jobs:
   - script: echo hello from iOS Debug job $(Build.Reason)
 
 
-- job: Android_Release
+- job: Android_Enterprise
   pool:
     vmImage: 'macOS 10.13'
   dependsOn: JS_PreBuild_Checks
@@ -116,7 +128,8 @@ jobs:
     inputs:
       versionSpec: '8.x'
   - script: |
-      npm install
+      npm install -g yarn
+      yarn install
       
   - task: Gradle@2
     inputs:
@@ -133,7 +146,7 @@ jobs:
       script: echo Upload Android app to Fabric
 
 
-- job: iOS_Release
+- job: iOS_Enterprise
   pool:
     vmImage: 'macOS 10.13'
   dependsOn: JS_PreBuild_Checks
