@@ -64,6 +64,10 @@
     "transformIgnorePatterns": [
       "(node_modules)/(?!react-native|parse)"
     ],
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ],
     "transform": {
       "^.+\\.js$": "node_modules/babel-jest"
     },
