@@ -1,0 +1,174 @@
+# Set variables once
+variables:
+  configuration: debug
+  IOS_SCHEME: DiscoverFinancial
+  TEST_IOS_SDK: iphonesimulator11.4
+  TEST_IOS_PLATFORM: iOS Simulator
+  TEST_IOS_OS: 11.4
+  TEST_IOS_DEVICE_NAME: 'iPhone SE'
+  IOS_FABRIC_UPLOAD: 1
+  ANDROID_FABRIC_UPLOAD: 1
+  ESLINT_CHECKS: 0
+
+jobs:
+# - job: JS_PreBuild_Checks
+#   pool:
+#     vmImage: 'Ubuntu 16.04'
+  
+#   steps:
+#   - task: NodeTool@0
+#     displayName: 'Custom Task: Install Node tool'
+#     inputs:
+#       versionSpec: '8.x'
+#   - task: Bash@3
+#     displayName: 'Custom Task: Flow checks'
+#     inputs:
+#       targetType: inline
+#       script: echo FLOW check script
+#   - task: Bash@3
+#     displayName: 'Custom Task: ESLint checks'
+#     inputs:
+#       targetType: inline
+#       script: echo ESLINT check script
+#   - task: Bash@3
+#     displayName: 'Custom Task: Circular dependency checks'
+#     inputs:
+#       targetType: inline
+#       script: echo CIRCLE dependency check script
+#   - task: Bash@3
+#     displayName: 'Custom Task: JSON Lint checks'
+#     inputs:
+#       targetType: inline
+#       script: echo JSON Lint check script
+
+#   - script: |
+#       npm install -g yarn
+#       npm install -g codecov
+#       yarn install
+#       yarn testWithCoverage && codecov --token=$(CODECOV_TOKEN)
+
+#   - task: PublishCodeCoverageResults@1
+#     displayName: 'Publish code coverage from $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml'
+#     inputs:
+#       codeCoverageTool: Cobertura
+#       summaryFileLocation: '$(System.DefaultWorkingDirectory)/**/*coverage.xml'
+#       reportDirectory: '$(System.DefaultWorkingDirectory)/**/lcov-report'    
+    
+- job: JS_PreBuild_Checks
+  pool:
+    name: default
+    timeoutInMinutes: 30
+    vmImage: 'Ubuntu 16.04'
+  dependsOn: JS_PreBuild_Checks
+  condition: succeeded()
+  strategy:
+    maxParallel: 4
+    matrix: 
+      FLOW_CHECKS:
+        FLOW_CHECKS: 1
+      ESLINT_CHECKS:
+        ESLINT_CHECKS: 1
+      Circular dependency checks:
+        NO_CICULAR_CHECKS: 1
+      JSONLINT_CHECKS:
+        JSONLINT_CHECKS: 1
+      CODE_COVERAGE_CHECKS:
+        CODE_COVERAGE_CHECKS: 1
+         
+  steps: 
+  - script: |
+      npm install -g yarn
+      npm install -g codecov
+      yarn install
+      yarn testWithCoverage && codecov --token=$(CODECOV_TOKEN)
+  - script: echo this is matrix ${ESLINT_CHECKS}
+          
+
+- job: Android_Debug
+  pool:
+    vmImage: 'macOS 10.13'
+  dependsOn: JS_PreBuild_Checks
+  condition: and(succeeded(), in(variables['Build.Reason'], 'PullRequest'))
+  steps:
+  - task: NodeTool@0
+    displayName: 'Custom Task: Install Node v8.x'
+    inputs:
+      versionSpec: '8.x'
+  - script: |
+      npm install -g yarn
+      yarn install
+      
+
+      
+  - task: Gradle@2
+    inputs:
+      workingDirectory: '$(system.defaultWorkingDirectory)/android'
+      gradleWrapperFile: '$(system.defaultWorkingDirectory)/android/gradlew'
+      gradleOptions: '-Xmx3072m'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'assembleDebug'
+
+  - task: CopyFiles@2
+    inputs:
+      contents: '**/*.apk'
+      targetFolder: '$(build.artifactStagingDirectory)'
+
+
+- job: iOS_Debug
+  pool:
+    vmImage: 'macOS 10.13'
+  dependsOn: JS_PreBuild_Checks
+  condition: and(succeeded(), in(variables['Build.Reason'], 'PullRequest'))
+  steps:
+  - script: echo hello from iOS Debug job $(Build.Reason)
+
+
+- job: Android_Enterprise
+  pool:
+    vmImage: 'macOS 10.13'
+  dependsOn: JS_PreBuild_Checks
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+  steps:
+  - task: NodeTool@0
+    displayName: 'Custom Task: Install Node v8.x'
+    inputs:
+      versionSpec: '8.x'
+  - script: |
+      npm install -g yarn
+      yarn install
+      
+  - task: Gradle@2
+    inputs:
+      workingDirectory: '$(system.defaultWorkingDirectory)/android'
+      gradleWrapperFile: '$(system.defaultWorkingDirectory)/android/gradlew'
+      gradleOptions: '-Xmx3072m'
+      publishJUnitResults: false
+      testResultsFiles: '**/TEST-*.xml'
+      tasks: 'assembleDebug'  
+  - task: Bash@3
+    displayName: 'Custom Task: Upload Android app to Fabric'
+    inputs:
+      targetType: inline
+      script: echo Upload Android app to Fabric
+
+
+- job: iOS_Enterprise
+  pool:
+    vmImage: 'macOS 10.13'
+  dependsOn: JS_PreBuild_Checks
+  condition: and(succeeded(), in(variables['Build.Reason'], 'IndividualCI', 'BatchedCI'))
+  steps:
+  - task: NodeTool@0
+    displayName: 'Custom Task: Install Node v8.x'
+    inputs:
+      versionSpec: '8.x'
+  - script: |
+      npm install
+      echo script for iOS Release job 
+  - task: Bash@3
+    displayName: 'Custom Task: Upload iOS app to Fabric'
+    inputs:
+      targetType: inline
+      script: echo Upload iOS app to Fabric
+  
