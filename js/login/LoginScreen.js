@@ -92,13 +92,13 @@ class LoginScreen extends React.Component {
           <View style={styles.mainHeadingSection}>
             <Animated.View style={this.fadeIn(500, 5)}>
               <Heading1 style={styles.h1}>
-                Facebook Developer Conference
+                Facebook Developer Conference !!!!
               </Heading1>
             </Animated.View>
             <Animated.Text
               style={[styles.whenWhereText, this.fadeIn(1200, 10)]}
             >
-              APRIL 18 + 19 / SAN JOSE, CALIFORNIA
+              APRIL 18 + 19 / SAN JOSE, CALIFORNIA, USA
             </Animated.Text>
           </View>
 

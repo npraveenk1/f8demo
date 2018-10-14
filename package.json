@@ -6,8 +6,8 @@
     "server": "docker-compose up",
     "android": "./scripts/run-android-app.sh",
     "ios": "babel-node ./scripts/open-ios-project.js",
-    "test": "jest --verbose",
     "testWithCoverage": "node_modules/jest/bin/jest.js --coverage",
+    "test": "jest --verbose",
     "lint": "eslint .",
     "prettier": "prettier --write '**/*.js'",
     "graphql": "babel-node ./scripts/generate-graphql-schema.js",
@@ -63,8 +63,14 @@
     "transformIgnorePatterns": [
       "(node_modules)/(?!react-native|parse)"
     ],
+    "coverageReporters": [
+      "text",
+      "cobertura"
+    ],
     "transform": {
       "^.+\\.js$": "node_modules/babel-jest"
-    }
+    },
+    "coverageDirectory": "./coverage/",
+    "collectCoverage": true
   }
 }

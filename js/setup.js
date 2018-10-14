@@ -20,7 +20,7 @@
  * DEALINGS IN THE SOFTWARE
  */
 "use strict";
-
+//
 // Depdencies
 import React from "react";
 import FacebookSDK from "./FacebookSDK";
