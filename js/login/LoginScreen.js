@@ -116,7 +116,7 @@ class LoginScreen extends React.Component {
               onPress={_ => this.props.dispatch(skipLogin())}
               style={styles.skipButton}
             >
-              <Text style={styles.skipText}>SKIP FOR NOW</Text>
+              <Text style={styles.skipText}>SKIP FOR NOW, REMIND ME TOMORROW</Text>
             </TouchableOpacity>
           </Animated.View>
         </View>
