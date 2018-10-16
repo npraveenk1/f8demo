@@ -108,6 +108,9 @@ class LoginScreen extends React.Component {
             <Text style={styles.loginComment}>
               Use Facebook to find your friends at F8.
             </Text>
+            <Text style={styles.loginComment}>
+              Use Facebook to invite friends to F8 and free food and goodies!!!.
+            </Text>
             <LoginButton source="First screen" />
             <TouchableOpacity
               onPress={_ => this.props.dispatch(skipLogin())}
