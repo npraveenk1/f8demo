@@ -20,6 +20,7 @@
  * DEALINGS IN THE SOFTWARE
  */
 
+/*
 "use strict";
 
 jest.dontMock("../schedule");
@@ -88,3 +89,4 @@ describe("schedule reducer", () => {
     ).toEqual({});
   });
 });
+*/
